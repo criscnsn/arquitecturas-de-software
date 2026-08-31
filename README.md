@@ -1,2 +1,18 @@
 # arquitecturas-de-software
-Repositorio del equipo donde se adjuntaran las entregas para la materia de Arquitecturas de Software 
+
+Repositorio dedicado a la entrega de actividades del equipo.
+
+---
+
+## Integrantes del Equipo
+
+| Cristopher Israel Cen Santana | Gael Antonio Ayuso Contreras | Mateo Alejandro Caamal Tencle |
+| :---: | :---: | :---: |
+| <img src="./docs/assets/cristopher.png" width="130" height="130" style="border-radius: 50%; object-fit: cover;" alt="Cristopher"> | <img src="./docs/assets/gael.png" width="130" height="130" style="border-radius: 50%; object-fit: cover;" alt="Gael"> | <img src="./docs/assets/mateo.png" width="130" height="130" style="border-radius: 50%; object-fit: cover;" alt="Mateo"> |
+| [GitHub](https://github.com/criscnsn) | [GitHub](https://github.com/gael-ayuso) | [GitHub](https://github.com/usuario-mateo) |
+
+---
+
+## Entregas
+
+---
