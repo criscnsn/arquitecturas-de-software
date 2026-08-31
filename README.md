@@ -2,7 +2,6 @@
 
 Repositorio dedicado a la entrega de actividades del equipo.
 
----
 
 ## Integrantes del Equipo
 
