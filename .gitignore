@@ -1,0 +1,22 @@
+# Compilación Maven / Java
+target/
+out/
+*.class
+*.jar
+*.war
+*.log
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos locales de entorno (si alguien usa credenciales locales aparte)
+application-local.properties

@@ -1,0 +1,14 @@
+/* ============================================================================
+ * Hoja de estilos principal de la aplicación
+ * Responsable: Mateo Alejandro Caamal Tencle (MateoAlejandroCaamalTencle)
+ * ============================================================================
+ * Función de este archivo:
+ * Personalizar la apariencia de las vistas Thymeleaf (cabecera tipo
+ * vistaProducto.png, estilos de la tabla, barra del buscador, formulario CRUD
+ * y tarjeta de inicio de sesión).
+ *
+ * TODO (Mateo):
+ * 1. Definir estilos de la cabecera superior (título + botones de acción).
+ * 2. Ajustar espaciados de la tabla, checkboxes e íconos de editar/eliminar.
+ * 3. Dar estilo al formulario de login y a la vista de error.
+ * ============================================================================ */

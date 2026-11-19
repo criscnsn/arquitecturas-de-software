@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <!-- TODO (Mateo): Incluir Bootstrap CSS (CDN o local) y /css/styles.css -->
+</head>
+<body>
+<!--
+================================================================================
+Vista principal del CRUD (Listado de registros + Buscador + Sesión activa)
+Responsable: Mateo Alejandro Caamal Tencle (MateoAlejandroCaamalTencle)
+Referencia visual: vistaProducto.png
+================================================================================
+Función de este archivo:
+Mostrar el listado de registros de la tabla MySQL, permitir filtrarlos con el
+Buscador, seleccionar uno o varios mediante checkboxes, crear nuevos registros,
+editar o eliminar individualmente y eliminar los seleccionados en lote.
+
+Contrato con ProductoController y AuthController (Gael):
+- Atributos de modelo disponibles:
+    * ${productos}              -> Lista de registros a iterar en la tabla
+    * ${q}                      -> Término actual del buscador
+    * ${session.usuarioSesion}  -> Usuario autenticado actualmente en sesión
+- Rutas HTTP a conectar:
+    * GET  /productos?q=...                 -> Formulario del Buscador
+    * GET  /productos/nuevo                 -> Botón superior "Agregar nuevo"
+    * POST /productos/eliminar-seleccionados -> Botón superior "Eliminar seleccionados" (envía lista `ids`)
+    * GET  /productos/editar/{id}           -> Botón "Editar" por fila
+    * POST /productos/eliminar/{id}         -> Botón "Eliminar" por fila
+    * POST /logout                          -> Botón "Cerrar sesión"
+
+TODO (Mateo):
+1. Barra superior con título, usuario en sesión, botón "Cerrar sesión", botón "Eliminar seleccionados" y botón "Agregar".
+2. Formulario del Buscador (input `name="q"`, botón buscar y botón limpiar).
+3. Tabla con columna de checkbox ("seleccionar todos" en cabecera y checkbox por fila con `name="ids"`),
+   columnas de los campos definidos en `Producto` y columna de Acciones (Editar / Eliminar).
+4. Enlazar /js/productos.js al final del body.
+================================================================================
+-->
+</body>
+</html>

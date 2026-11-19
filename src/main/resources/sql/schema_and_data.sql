@@ -1,0 +1,18 @@
+-- =============================================================================
+-- Script de inicialización de base de datos MySQL
+-- Responsable: Cristopher Israel Cen Santana (criscnsn)
+-- =============================================================================
+-- Función de este archivo:
+-- Crear la base de datos, definir las tablas del proyecto y cargar registros
+-- iniciales de prueba para que el equipo pueda probar el CRUD y las sesiones.
+--
+-- TODO (Cristopher):
+-- 1. Crear la base de datos (ej. CREATE DATABASE IF NOT EXISTS crud_framework_db;).
+-- 2. Crear la tabla principal `productos` con al menos 3 campos obligatorios:
+--      - 1 identificador único (id, BIGINT AUTO_INCREMENT PRIMARY KEY)
+--      - 1 o más campos de texto (ej. nombre, descripcion / categoria)
+--      - 1 o más campos numéricos (ej. precio, stock)
+-- 3. Crear la tabla `usuarios` para la mejora de Manejo de Sesiones:
+--      - id, username (UNIQUE), password, nombre_completo (opcional)
+-- 4. Agregar sentencias INSERT con datos de prueba (productos y al menos 1 usuario).
+-- =============================================================================
