@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     rol                ENUM('GERENTE', 'EMPLEADO')                 NOT NULL DEFAULT 'EMPLEADO',
     estado             ENUM('ACTIVO', 'VACACIONES', 'INCAPACIDAD') NOT NULL DEFAULT 'ACTIVO',
     fecha_ingreso      DATE                                        NOT NULL,
-    correo_electronico VARCHAR(30)                                NOT NULL,
+    correo_electronico VARCHAR(60)                                 NOT NULL,
     telefono           VARCHAR(10)                                 NOT NULL,
     direccion          VARCHAR(200)                                NOT NULL,
     salario            DECIMAL(10, 2)                              NOT NULL,
