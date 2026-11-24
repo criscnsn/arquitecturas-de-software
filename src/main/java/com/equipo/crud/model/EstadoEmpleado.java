@@ -1,23 +1,50 @@
 package com.equipo.crud.model;
 
 /**
- * Enumeración que representa el estado laboral actual de un usuario/empleado.
+ * Enumeración que representa la situación laboral actual de un usuario/empleado.
  *
- * <p><b>Responsable:</b> Cristopher Israel Cen Santana ({@code criscnsn})</p>
- * <p><b>Función:</b> Permitir al gerente actualizar la situación laboral del empleado
- * y al empleado consultar su estado actual al iniciar sesión.</p>
+ * <p>Puede ser modificada por un {@link Rol#GERENTE} desde el modal de edición
+ * y consultada por el {@link Rol#EMPLEADO} al iniciar sesión.</p>
  *
- * <p><b>TODO (Cristopher):</b></p>
- * <ul>
- *   <li>Completar el Javadoc y, si ayuda a las vistas de Mateo, agregar un texto
- *       amigable por constante (ej. {@code "Activo"}, {@code "Vacaciones"}, {@code "Incapacidad"}).</li>
- * </ul>
+ * @author Cristopher Israel Cen Santana
  */
 public enum EstadoEmpleado {
-    /** El empleado labora normalmente. */
-    ACTIVO,
-    /** El empleado se encuentra en periodo vacacional. */
-    VACACIONES,
-    /** El empleado se encuentra en incapacidad. */
-    INCAPACIDAD
+
+    /**
+     * El empleado se encuentra laborando normalmente.
+     */
+    ACTIVO("Activo"),
+
+    /**
+     * El empleado se encuentra en periodo vacacional.
+     */
+    VACACIONES("Vacaciones"),
+
+    /**
+     * El empleado se encuentra en incapacidad médica o laboral.
+     */
+    INCAPACIDAD("Incapacidad");
+
+    /**
+     * Etiqueta legible del estado para renderizar en tablas, insignias y selectores.
+     */
+    private final String etiqueta;
+
+    /**
+     * Construye una constante de estado laboral con su etiqueta legible.
+     *
+     * @param etiqueta texto amigable del estado
+     */
+    EstadoEmpleado(String etiqueta) {
+        this.etiqueta = etiqueta;
+    }
+
+    /**
+     * Obtiene la etiqueta legible del estado laboral.
+     *
+     * @return texto descriptivo del estado
+     */
+    public String getEtiqueta() {
+        return etiqueta;
+    }
 }
