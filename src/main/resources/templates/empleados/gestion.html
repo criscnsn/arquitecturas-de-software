@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Empleados</title>
+    <!-- TODO (Mateo): Incluir Bootstrap 5 CSS, iconos (Bootstrap Icons o FontAwesome) y /css/styles.css -->
+</head>
+<body>
+<!--
+================================================================================
+Vista principal del GERENTE — Manejador de Empleados (CRUD + Buscador + Modales)
+Responsable: Mateo Alejandro Caamal Tencle (MateoAlejandroCaamalTencle)
+Referencia visual: Basarse en la interfaz de ejemplo de la plataforma.
+================================================================================
+Función de este archivo:
+Mostrar al GERENTE el listado de empleados (nunca gerentes) con la estética de la
+interfaz de ejemplo de la plataforma, permitiendo buscar, seleccionar uno o todos
+los empleados y realizar altas, ediciones y eliminaciones mediante ventanas
+flotantes (modales de Bootstrap) sin cambiar de pantalla.
+
+Contrato con EmpleadoController y AuthController (Gael):
+- Atributos de modelo disponibles:
+    * ${empleados}              -> Lista de Usuario con rol EMPLEADO
+    * ${estados}                -> Valores de EstadoEmpleado (ACTIVO, VACACIONES, INCAPACIDAD)
+    * ${q}                      -> Término actual del buscador
+    * ${nuevoEmpleado}          -> Objeto vacío para el formulario del modal de creación
+    * ${mensajeExito} / ${mensajeError} -> Mensajes flash tras operaciones CRUD
+    * ${session.usuarioSesion}  -> Gerente autenticado actualmente en sesión
+- Rutas HTTP a conectar:
+    * GET  /empleados?q=...                  -> Formulario del Buscador (nombre, correo o teléfono; NO dirección)
+    * POST /empleados/crear                  -> Formulario del modal "Añadir nuevo empleado"
+    * POST /empleados/editar/{id}            -> Formulario del modal "Editar empleado"
+    * POST /empleados/eliminar/{id}          -> Formulario del modal "Eliminar empleado individual"
+    * POST /empleados/eliminar-seleccionados -> Formulario del modal "Eliminar seleccionados" (envía lista `ids`)
+    * POST /logout                           -> Botón "Cerrar sesión"
+
+TODO (Mateo):
+1. Cabecera superior estilo plataforma:
+   - Título del módulo, nombre del gerente en sesión y botón "Cerrar sesión".
+   - Botón rojo "Eliminar" (DESHABILITADO por defecto; solo se activa si hay >= 1 checkbox marcado).
+   - Botón verde "Añadir nuevo empleado" (siempre habilitado; abre el modal de creación).
+2. Barra del Buscador (input `name="q"`, placeholder indicando búsqueda por nombre, correo o teléfono, botón buscar y botón limpiar).
+3. Tabla de empleados:
+   - Columna izquierda con checkbox maestro en el encabezado ("seleccionar todos") y checkbox por fila con el `id`.
+   - Columnas visibles: ID, Nombre completo (`empleado.nombreCompleto`, en una sola celda), Correo electrónico,
+     Dirección, Teléfono, Salario, Estado (badge), Fecha de ingreso y Acciones (Editar / Eliminar individual).
+   - Botones Editar y Eliminar de cada fila con atributos `data-*` para poblar los modales sin afectar otros checkboxes.
+4. Ventanas flotantes (Modales de Bootstrap 5 — todo en esta misma vista):
+   - Modal 1 (Nuevo empleado): todos los campos obligatorios excepto `apellido2` (`contrasena` máx. 16 chars,
+     `telefono` máx. 10 dígitos, `estado`, `fechaIngreso`, `salario`). NO mostrar campo `id` (lo asigna MySQL).
+   - Modal 2 (Editar empleado): muestra `id` solo lectura y todos los demás campos editables (`contrasena` opcional
+     si no desea cambiarse). Botón "Confirmar edición" DESHABILITADO hasta que se modifique al menos un campo.
+   - Modal 3 (Confirmar eliminación individual): texto
+     "¿Seguro que quieres borrar al siguiente empleado del sistema: <nombre>?" con botones Cancelar y Borrar.
+   - Modal 4 (Confirmar eliminación múltiple): texto dinámico según si eligió todos
+     ("¿Seguro que quieres eliminar a todos los empleados del sistema?") o un subconjunto, con Cancelar y Eliminar.
+5. Enlazar Bootstrap 5 JS y /js/empleados.js al final del body.
+================================================================================
+-->
+</body>
+</html>

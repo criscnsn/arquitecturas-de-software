@@ -15,7 +15,7 @@
     <artifactId>crud-framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>PF_CRUD_Framework</name>
-    <description>Aplicación CRUD con Spring Boot, Spring MVC, Thymeleaf y MySQL</description>
+    <description>Manejador de Empleados (CRUD) con Spring Boot, Spring MVC, Thymeleaf y MySQL</description>
 
     <properties>
         <java.version>17</java.version>

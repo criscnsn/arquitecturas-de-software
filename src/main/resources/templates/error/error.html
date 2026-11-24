@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error</title>
-    <!-- TODO (Mateo): Incluir Bootstrap CSS y /css/styles.css -->
+    <!-- TODO (Mateo): Incluir Bootstrap 5 CSS y /css/styles.css -->
 </head>
 <body>
 <!--
@@ -13,18 +13,18 @@ Vista amigable para el Manejo de Excepciones
 Responsable: Mateo Alejandro Caamal Tencle (MateoAlejandroCaamalTencle)
 ================================================================================
 Función de este archivo:
-Presentar al usuario un mensaje claro cuando ocurre una excepción controlada
-por GlobalExceptionHandler (por ejemplo, ProductoNotFoundException).
+Presentar un mensaje claro cuando ocurre una excepción controlada por
+GlobalExceptionHandler (ej. EmpleadoNotFoundException o registro duplicado).
 
 Contrato con GlobalExceptionHandler (Cristopher):
 - Atributos esperados en el modelo:
     * ${tituloError}  -> Título breve del error
     * ${mensajeError} -> Descripción legible del problema
-- Botón de retorno: enlace a GET /productos
+- Botón de retorno: enlace a GET / (redirige automáticamente según el rol en sesión)
 
 TODO (Mateo):
 1. Renderizar `${tituloError}` y `${mensajeError}` en un contenedor limpio.
-2. Agregar botón para regresar al listado principal.
+2. Agregar botón para regresar al inicio (`/`).
 ================================================================================
 -->
 </body>

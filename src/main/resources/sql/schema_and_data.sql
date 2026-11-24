@@ -1,18 +1,31 @@
 -- =============================================================================
--- Script de inicialización de base de datos MySQL
+-- Script de inicialización de base de datos MySQL — Manejador de Empleados
 -- Responsable: Cristopher Israel Cen Santana (criscnsn)
 -- =============================================================================
 -- Función de este archivo:
--- Crear la base de datos, definir las tablas del proyecto y cargar registros
--- iniciales de prueba para que el equipo pueda probar el CRUD y las sesiones.
+-- Crear la base de datos, definir la tabla única `usuarios` (almacena tanto
+-- GERENTE como EMPLEADO evitando redundancia de esquema) y cargar datos semilla
+-- de gerentes y empleados de prueba.
 --
 -- TODO (Cristopher):
--- 1. Crear la base de datos (ej. CREATE DATABASE IF NOT EXISTS crud_framework_db;).
--- 2. Crear la tabla principal `productos` con al menos 3 campos obligatorios:
---      - 1 identificador único (id, BIGINT AUTO_INCREMENT PRIMARY KEY)
---      - 1 o más campos de texto (ej. nombre, descripcion / categoria)
---      - 1 o más campos numéricos (ej. precio, stock)
--- 3. Crear la tabla `usuarios` para la mejora de Manejo de Sesiones:
---      - id, username (UNIQUE), password, nombre_completo (opcional)
--- 4. Agregar sentencias INSERT con datos de prueba (productos y al menos 1 usuario).
+-- 1. Crear la base de datos `empleados_crud_db` con utf8mb4 / utf8mb4_unicode_ci.
+-- 2. Crear la tabla `usuarios` (Motor InnoDB) con las columnas acordadas
+--    (TODAS NOT NULL excepto `apellido2`):
+--      - id                  BIGINT AUTO_INCREMENT PRIMARY KEY (no editable)
+--      - usuario             VARCHAR(30)  NOT NULL UNIQUE (acceso al sistema)
+--      - contrasena          VARCHAR(16)  NOT NULL (máx. 16 chars, sin encriptar)
+--      - nombre              VARCHAR(60)  NOT NULL
+--      - apellido1           VARCHAR(50)  NOT NULL (obligatorio)
+--      - apellido2           VARCHAR(50)  NULL     (opcional)
+--      - rol                 ENUM('GERENTE', 'EMPLEADO') NOT NULL DEFAULT 'EMPLEADO'
+--      - estado              ENUM('ACTIVO', 'VACACIONES', 'INCAPACIDAD') NOT NULL DEFAULT 'ACTIVO'
+--      - fecha_ingreso       DATE         NOT NULL
+--      - correo_electronico  VARCHAR(100) NOT NULL UNIQUE
+--      - telefono            VARCHAR(10)  NOT NULL (máx. 10 dígitos)
+--      - direccion           VARCHAR(200) NOT NULL
+--      - salario             DECIMAL(10,2) NOT NULL CHECK (salario >= 0.00)  [campo numérico de rúbrica]
+-- 3. Agregar índices para optimizar el Buscador (nombre/apellido1, telefono;
+--    correo_electronico ya queda indexado por UNIQUE) y filtrado por rol.
+-- 4. Insertar datos semilla: al menos 1-2 usuarios con rol 'GERENTE'
+--    (los gerentes solo se dan de alta desde BD) y varios con rol 'EMPLEADO'.
 -- =============================================================================

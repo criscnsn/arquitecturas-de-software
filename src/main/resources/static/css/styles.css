@@ -1,14 +1,15 @@
 /* ============================================================================
- * Hoja de estilos principal de la aplicación
+ * Hoja de estilos principal — Manejador de Empleados
  * Responsable: Mateo Alejandro Caamal Tencle (MateoAlejandroCaamalTencle)
  * ============================================================================
  * Función de este archivo:
- * Personalizar la apariencia de las vistas Thymeleaf (cabecera tipo
- * vistaProducto.png, estilos de la tabla, barra del buscador, formulario CRUD
- * y tarjeta de inicio de sesión).
+ * Personalizar la apariencia de las vistas Thymeleaf siguiendo la estética de
+ * la interfaz de ejemplo de la plataforma, más los estilos del directorio de
+ * empleados, badges de estado, modales y pantalla de login.
  *
  * TODO (Mateo):
- * 1. Definir estilos de la cabecera superior (título + botones de acción).
- * 2. Ajustar espaciados de la tabla, checkboxes e íconos de editar/eliminar.
- * 3. Dar estilo al formulario de login y a la vista de error.
+ * 1. Estilos de cabecera superior oscura estilo plataforma (título + botones Delete / Add).
+ * 2. Ajustes de tabla, checkboxes, buscador e íconos de editar (amarillo) / eliminar (rojo).
+ * 3. Clase de resaltado para la fila del propio empleado en `directorio.html`.
+ * 4. Estilos para badges de estado (ACTIVO, VACACIONES, INCAPACIDAD), login y error.
  * ============================================================================ */

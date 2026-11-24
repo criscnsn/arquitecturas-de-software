@@ -3,25 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
-    <!-- TODO (Mateo): Incluir Bootstrap CSS y /css/styles.css -->
+    <title>Iniciar Sesión — Manejador de Empleados</title>
+    <!-- TODO (Mateo): Incluir Bootstrap 5 CSS y /css/styles.css -->
 </head>
 <body>
 <!--
 ================================================================================
-Vista de Inicio de Sesión (Mejora: Manejo de sesiones)
+Vista de Inicio de Sesión (Mejora: Manejo de sesiones con 2 roles)
 Responsable: Mateo Alejandro Caamal Tencle (MateoAlejandroCaamalTencle)
 ================================================================================
 Función de este archivo:
-Solicitar usuario y contraseña antes de permitir el acceso al CRUD principal.
+Solicitar las credenciales (`usuario` y `contrasena`) antes de permitir el acceso
+al sistema. Según el rol del usuario autenticado, AuthController redirige a
+`/empleados` (GERENTE) o a `/empleados/directorio` (EMPLEADO).
 
 Contrato con AuthController (Gael):
 - Acción del formulario: POST /login
-- Campos esperados: `username` y `password`
-- Atributo opcional de error: ${errorLogin} (mostrar alerta si las credenciales son incorrectas)
+- Campos esperados: `usuario` (maxlength="30") y `contrasena` (maxlength="16")
+- Atributo opcional de error: ${errorLogin} (mostrar alerta si las credenciales fallan)
 
 TODO (Mateo):
-1. Diseñar tarjeta centrada con campos `username` y `password`.
+1. Diseñar tarjeta centrada con campos `usuario` y `contrasena` (máx. 16 caracteres).
 2. Mostrar alerta condicional cuando exista `${errorLogin}`.
 3. Agregar botón de envío ("Iniciar sesión").
 ================================================================================

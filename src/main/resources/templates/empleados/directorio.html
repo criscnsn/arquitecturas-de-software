@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio de Empleados</title>
+    <!-- TODO (Mateo): Incluir Bootstrap 5 CSS y /css/styles.css -->
+</head>
+<body>
+<!--
+================================================================================
+Vista del EMPLEADO — Directorio y Estado Personal (Solo lectura)
+Responsable: Mateo Alejandro Caamal Tencle (MateoAlejandroCaamalTencle)
+================================================================================
+Función de este archivo:
+Pantalla a la que accede un usuario con rol EMPLEADO al iniciar sesión.
+Le permite consultar su propia información laboral (estado y antigüedad en la
+empresa) y ver el listado de empleados identificando y resaltando su propia fila
+en otro color, SIN controles de creación, edición ni eliminación.
+
+Contrato con EmpleadoController y AuthController (Gael):
+- Atributos de modelo disponibles:
+    * ${empleados}              -> Lista de empleados (rol EMPLEADO)
+    * ${session.usuarioSesion}  -> Empleado autenticado actualmente en sesión
+- Rutas HTTP a conectar:
+    * POST /logout              -> Botón "Cerrar sesión"
+
+TODO (Mateo):
+1. Barra superior con saludo al empleado en sesión y botón "Cerrar sesión".
+2. Tarjeta de resumen personal del empleado autenticado:
+   - Nombre completo (`session.usuarioSesion.nombreCompleto`).
+   - Estado laboral actual (`ACTIVO`, `VACACIONES` o `INCAPACIDAD`) con insignia visual.
+   - Fecha de ingreso (`fechaIngreso`) y tiempo en la empresa (`antiguedad`).
+   - Su propio salario (privado, visible solo en su tarjeta personal y NO en la tabla de compañeros).
+3. Tabla de solo lectura de empleados:
+   - Sin checkboxes, sin botones de agregar/editar/eliminar y sin exponer contraseñas ni salarios ajenos.
+   - Resaltar con una clase CSS distinta la fila donde `empleado.id == session.usuarioSesion.id`
+     y mostrar una etiqueta tipo "(Tú)" junto a su nombre.
+================================================================================
+-->
+</body>
+</html>
