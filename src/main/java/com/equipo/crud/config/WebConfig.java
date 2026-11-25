@@ -11,19 +11,34 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * <p><b>Función:</b> Registrar {@link SessionInterceptor} sobre {@code /empleados/**}
  * excluyendo las rutas públicas ({@code /login}, {@code /logout}, {@code /css/**}, {@code /js/**}, {@code /error}).</p>
  *
- * <p><b>TODO (Gael):</b></p>
- * <ul>
- *   <li>Inyectar {@link SessionInterceptor} por constructor.</li>
- *   <li>Registrar el interceptor en {@link #addInterceptors(InterceptorRegistry)}.</li>
- * </ul>
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    // TODO: Inyectar SessionInterceptor por constructor.
+    /** Interceptor que comprueba la sesión y el rol de acceso al módulo de empleados. */
+    private final SessionInterceptor sessionInterceptor;
 
+    /**
+     * Construye la configuración MVC con el interceptor de sesiones.
+     *
+     * @param sessionInterceptor interceptor administrado por Spring para proteger las rutas
+     */
+    public WebConfig(SessionInterceptor sessionInterceptor) {
+        this.sessionInterceptor = sessionInterceptor;
+    }
+
+    /**
+     * Registra el interceptor en las rutas del módulo de empleados.
+     *
+     * <p>El patrón {@code /empleados/**} comprende la gestión y el directorio.
+     * Las rutas públicas de autenticación, recursos estáticos y errores quedan excluidas.</p>
+     *
+     * @param registry registro de interceptores proporcionado por Spring MVC
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // TODO (Gael): Registrar SessionInterceptor para /empleados y /empleados/** excluyendo rutas públicas.
+        registry.addInterceptor(sessionInterceptor)
+                .addPathPatterns("/empleados/**")
+                .excludePathPatterns("/login", "/logout", "/css/**", "/js/**", "/error");
     }
 }

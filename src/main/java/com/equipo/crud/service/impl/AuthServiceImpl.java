@@ -21,24 +21,32 @@ import org.springframework.stereotype.Service;
  * correspondiente al rol.
  * </p>
  *
- * <p>
- * <b>TODO (Gael):</b>
- * </p>
- * <ul>
- * <li>Inyectar {@code UsuarioRepository} por constructor.</li>
- * <li>Buscar al usuario por {@code usuario} y comparar {@code contrasena} de
- * forma segura contra nulos.</li>
- * </ul>
  */
 @Service
 public class AuthServiceImpl implements AuthService {
+    /** Repositorio utilizado para localizar las credenciales registradas. */
     private final UsuarioRepository repository;
 
-    // TODO: Inyectar UsuarioRepository por constructor.
+    /**
+     * Construye el servicio de autenticación con el repositorio de usuarios.
+     *
+     * @param usuarioRepository repositorio utilizado para buscar usuarios por su nombre de acceso
+     */
     public AuthServiceImpl(UsuarioRepository usuarioRepository) {
         this.repository = usuarioRepository;
     }
 
+    /**
+     * Busca el usuario y compara su contraseña registrada con la recibida.
+     *
+     * <p>La comparación se realiza con {@link Objects#equals(Object, Object)}.
+     * Este método no crea sesiones; esa responsabilidad corresponde al controlador.</p>
+     *
+     * @param usuario nombre de acceso, o {@code null} para un intento inválido
+     * @param contrasena contraseña recibida, o {@code null} para un intento inválido
+     * @return usuario autenticado, o un {@link Optional} vacío si falta un dato,
+     *         no existe el usuario o la contraseña no coincide
+     */
     @Override
     public Optional<Usuario> autenticar(String usuario, String contrasena) {
         if (usuario == null || contrasena == null) {
