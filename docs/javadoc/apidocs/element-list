@@ -1,0 +1,8 @@
+com.equipo.crud
+com.equipo.crud.config
+com.equipo.crud.controller
+com.equipo.crud.exception
+com.equipo.crud.model
+com.equipo.crud.repository
+com.equipo.crud.service
+com.equipo.crud.service.impl

@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html","k":"18"},{"l":"com.equipo.crud"},{"l":"com.equipo.crud.config"},{"l":"com.equipo.crud.controller"},{"l":"com.equipo.crud.exception"},{"l":"com.equipo.crud.model"},{"l":"com.equipo.crud.repository"},{"l":"com.equipo.crud.service"},{"l":"com.equipo.crud.service.impl"}];updateSearchResults();
