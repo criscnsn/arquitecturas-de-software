@@ -1,7 +1,27 @@
 package com.equipo.crud.controller;
 
+import jakarta.validation.Valid;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.equipo.crud.exception.EmpleadoNotFoundException;
+import com.equipo.crud.model.EstadoEmpleado;
+import com.equipo.crud.model.Rol;
+import com.equipo.crud.model.Usuario;
+import com.equipo.crud.service.EmpleadoService;
+import java.util.List;
 
 /**
  * Controlador Spring MVC para la gestión CRUD (rol {@code GERENTE}) y el directorio (rol {@code EMPLEADO}).
@@ -29,20 +49,209 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *       Retorna {@code "empleados/directorio"}.</li>
  * </ul>
  *
- * <p><b>TODO (Gael):</b></p>
+ * <p><b>Manejo de formularios:</b></p>
  * <ul>
- *   <li>Inyectar {@code EmpleadoService} por constructor.</li>
- *   <li>Implementar las rutas listadas arriba enviando al {@code Model}:
- *       {@code empleados}, {@code estados} ({@code EstadoEmpleado.values()}), {@code q} (término buscado)
- *       y {@code nuevoEmpleado} (objeto vacío para el modal de alta).</li>
- *   <li>Manejar errores de validación con {@code BindingResult} y mensajes flash ({@code mensajeExito}, {@code mensajeError}).</li>
+ *   <li>Los formularios de alta y edición utilizan {@code BindingResult} para corregir datos inválidos.</li>
+ *   <li>Las eliminaciones reciben identificadores y redirigen al listado con mensajes flash.</li>
  * </ul>
  */
 @Controller
 @RequestMapping("/empleados")
 public class EmpleadoController {
 
-    // TODO: Inyectar EmpleadoService por constructor.
+    private final EmpleadoService empleadoService;
 
-    // TODO: Implementar endpoints del CRUD (GERENTE) y directorio solo lectura (EMPLEADO).
+    public EmpleadoController(EmpleadoService empleadoService) {
+        this.empleadoService = empleadoService;
+    }
+
+    @InitBinder("nuevoEmpleado")
+    public void configurarFormularioNuevoEmpleado(WebDataBinder binder) {
+        // El formulario solo puede asignar campos editables; nunca el ID ni el rol.
+        binder.setAllowedFields("usuario", "contrasena", "nombre", "apellido1", "apellido2",
+                "estado", "fechaIngreso", "correoElectronico", "telefono", "direccion", "salario");
+    }
+
+    @GetMapping
+    public String listar(
+            @RequestParam(name = "q", required = false) String q,
+            @SessionAttribute(name = "usuarioSesion", required = false) Usuario usuarioSesion,
+            Model model) {
+        if (usuarioSesion == null) {
+            return "redirect:/login";
+        }
+        if (usuarioSesion.getRol() != Rol.GERENTE) {
+            return "redirect:/empleados/directorio";
+        }
+
+        String termino = q == null ? "" : q.trim();
+        List<Usuario> empleados;
+        if (termino.isBlank()) {
+            empleados = empleadoService.listarEmpleados();
+        } else {
+            empleados = empleadoService.buscarEmpleados(termino);
+        }
+
+        model.addAttribute("empleados", empleados);
+        model.addAttribute("estados", EstadoEmpleado.values());
+        model.addAttribute("q", termino);
+        model.addAttribute("nuevoEmpleado", new Usuario());
+        return "empleados/gestion";
+    }
+
+    @PostMapping("/crear")
+    public String crearEmpleado(
+            @SessionAttribute(name = "usuarioSesion", required = false) Usuario usuarioSesion,
+            @Valid @ModelAttribute("nuevoEmpleado") Usuario nuevoEmpleado,
+            BindingResult bindingResult,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        if (usuarioSesion == null) {
+            return "redirect:/login";
+        }
+        if (usuarioSesion.getRol() != Rol.GERENTE) {
+            return "redirect:/empleados/directorio";
+        }
+
+        if (nuevoEmpleado.getContrasena() == null || nuevoEmpleado.getContrasena().isBlank()) {
+            bindingResult.rejectValue("contrasena", "NotBlank", "La contraseña es obligatoria");
+        }
+        if (bindingResult.hasErrors()) {
+            return mostrarErroresAlta(model, "Revisa los datos del formulario antes de guardar.");
+        }
+
+        try {
+            empleadoService.crearEmpleado(nuevoEmpleado);
+        } catch (DataIntegrityViolationException ex) {
+            String mensaje = "No se pudo crear el empleado. El usuario o correo ya existe, o algún dato no es válido.";
+            bindingResult.reject("empleado.datosInvalidos", mensaje);
+            return mostrarErroresAlta(model, mensaje);
+        }
+
+        redirectAttributes.addFlashAttribute("mensajeExito", "Empleado creado exitosamente.");
+        return "redirect:/empleados";
+    }
+
+    @PostMapping("/editar/{id}")
+    public String editarEmpleado(
+        @SessionAttribute (name = "usuarioSesion", required = false) Usuario usuarioSesion,
+        @PathVariable("id") Long id,
+        @Valid @ModelAttribute("editarEmpleado") Usuario editarEmpleado,
+        BindingResult bindingResult,
+        Model model,
+        RedirectAttributes redirectAttributes
+    ){
+        if (usuarioSesion == null) {
+            return "redirect:/login";
+        }
+        if (usuarioSesion.getRol() != Rol.GERENTE) {
+            return "redirect:/empleados/directorio";
+        }
+        if(id == null || !id.equals(editarEmpleado.getId())){
+            bindingResult.reject("empleado.idInvalido", "El ID del empleado no coincide con la ruta.");
+        }
+        if(bindingResult.hasErrors()){
+            return mostrarErroresEdicion(model, "Revisa los datos del formulario antes de guardar.");
+        }
+        try {
+            empleadoService.actualizarEmpleado(id, editarEmpleado);
+        } catch (DataIntegrityViolationException ex) {
+            String mensaje = "No se pudo actualizar el empleado. El usuario o correo ya existe, o algún dato no es válido.";
+            bindingResult.reject("empleado.datosInvalidos", mensaje);
+            return mostrarErroresEdicion(model, mensaje);
+        }
+        redirectAttributes.addFlashAttribute("mensajeExito", "Empleado actualizado exitosamente.");
+        return "redirect:/empleados";
+    }
+
+    @PostMapping("/eliminar/{id}")
+    public String eliminarEmpleado(
+            @SessionAttribute(name = "usuarioSesion", required = false) Usuario usuarioSesion,
+            @PathVariable("id") Long id,
+            RedirectAttributes redirectAttributes) {
+        if (usuarioSesion == null) {
+            return "redirect:/login";
+        }
+        if (usuarioSesion.getRol() != Rol.GERENTE) {
+            return "redirect:/empleados/directorio";
+        }
+
+        try {
+            empleadoService.eliminarEmpleadoPorId(id);
+        } catch (EmpleadoNotFoundException ex) {
+            redirectAttributes.addFlashAttribute("mensajeError",
+                    "No se pudo eliminar el empleado. No existe o no tiene el rol EMPLEADO.");
+            return "redirect:/empleados";
+        } catch (DataIntegrityViolationException ex) {
+            redirectAttributes.addFlashAttribute("mensajeError",
+                    "No se pudo eliminar el empleado porque existen datos relacionados o restricciones de integridad.");
+            return "redirect:/empleados";
+        }
+        redirectAttributes.addFlashAttribute("mensajeExito", "Empleado eliminado exitosamente.");
+        return "redirect:/empleados";
+    }
+
+    @PostMapping("/eliminar-seleccionados")
+    public String eliminarEmpleadosSeleccionados(
+            @SessionAttribute(name = "usuarioSesion", required = false) Usuario usuarioSesion,
+            @RequestParam(name = "ids", required = false) List<Long> ids,
+            RedirectAttributes redirectAttributes) {
+        if (usuarioSesion == null) {
+            return "redirect:/login";
+        }
+        if (usuarioSesion.getRol() != Rol.GERENTE) {
+            return "redirect:/empleados/directorio";
+        }
+
+        if (ids == null || ids.isEmpty()) {
+            redirectAttributes.addFlashAttribute("mensajeError", "No se seleccionaron empleados para eliminar.");
+            return "redirect:/empleados";
+        }
+        try {
+            empleadoService.eliminarEmpleadosSeleccionados(ids);
+        } catch (EmpleadoNotFoundException ex) {
+            redirectAttributes.addFlashAttribute("mensajeError",
+                    "No se pudieron eliminar los empleados seleccionados. Alguno no existe o no tiene el rol EMPLEADO.");
+            return "redirect:/empleados";
+        } catch (DataIntegrityViolationException ex) {
+            redirectAttributes.addFlashAttribute("mensajeError",
+                    "No se pudieron eliminar los empleados seleccionados porque existen datos relacionados o restricciones de integridad.");
+            return "redirect:/empleados";
+        }
+        redirectAttributes.addFlashAttribute("mensajeExito", "Empleados eliminados exitosamente.");
+        return "redirect:/empleados";
+    }
+
+    @GetMapping ("/directorio")
+    public String directorio(
+    @SessionAttribute (name = "usuarioSesion", required = false) Usuario usuarioSesion,
+    Model model
+    ){
+        if (usuarioSesion == null) {
+            return "redirect:/login";
+        }
+        List<Usuario> empleados = empleadoService.listarEmpleados();
+        model.addAttribute("empleados", empleados);
+        model.addAttribute("usuarioSesion", usuarioSesion);
+        return "empleados/directorio";
+    }
+
+    private String mostrarErroresAlta(Model model, String mensaje) {
+        model.addAttribute("empleados", empleadoService.listarEmpleados());
+        model.addAttribute("estados", EstadoEmpleado.values());
+        model.addAttribute("q", "");
+        model.addAttribute("mensajeError", mensaje);
+        model.addAttribute("abrirModalNuevoEmpleado", true);
+        return "empleados/gestion";
+    }
+
+    private String mostrarErroresEdicion(Model model, String mensaje) {
+        model.addAttribute("empleados", empleadoService.listarEmpleados());
+        model.addAttribute("estados", EstadoEmpleado.values());
+        model.addAttribute("q", "");
+        model.addAttribute("nuevoEmpleado", new Usuario());
+        model.addAttribute("mensajeError", mensaje);
+        model.addAttribute("abrirModalEditarEmpleado", true);
+        return "empleados/gestion";
+    }
 }
