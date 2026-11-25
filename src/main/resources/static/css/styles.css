@@ -1,15 +1,240 @@
 /* ============================================================================
  * Hoja de estilos principal — Manejador de Empleados
  * Responsable: Mateo Alejandro Caamal Tencle (MateoAlejandroCaamalTencle)
- * ============================================================================
- * Función de este archivo:
- * Personalizar la apariencia de las vistas Thymeleaf siguiendo la estética de
- * la interfaz de ejemplo de la plataforma, más los estilos del directorio de
- * empleados, badges de estado, modales y pantalla de login.
- *
- * TODO (Mateo):
- * 1. Estilos de cabecera superior oscura estilo plataforma (título + botones Delete / Add).
- * 2. Ajustes de tabla, checkboxes, buscador e íconos de editar (amarillo) / eliminar (rojo).
- * 3. Clase de resaltado para la fila del propio empleado en `directorio.html`.
- * 4. Estilos para badges de estado (ACTIVO, VACACIONES, INCAPACIDAD), login y error.
  * ============================================================================ */
+
+:root {
+    --color-header-bg: #435d7d;
+    --color-body-bg: #f5f7fa;
+    --color-edit: #ffc107;
+    --color-edit-hover: #e0a800;
+    --color-delete: #f44336;
+    --color-delete-hover: #d32f2f;
+    --color-highlight-row: #e7f1ff;
+}
+
+body {
+    background-color: var(--color-body-bg);
+    color: #333333;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.92rem;
+}
+
+/* Barra de navegación superior */
+.navbar-sistema {
+    background-color: #2c3e50;
+}
+
+/* Contenedor principal de tabla estilo plataforma */
+.table-wrapper {
+    background: #ffffff;
+    padding: 0;
+    margin: 24px 0;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.table-title {
+    background: var(--color-header-bg);
+    color: #ffffff;
+    padding: 18px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.table-title h2 {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 400;
+}
+
+.table-title h2 b {
+    font-weight: 600;
+}
+
+.table-title .btn-group-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.table-title .btn {
+    font-size: 0.88rem;
+    font-weight: 500;
+    border-radius: 4px;
+    padding: 8px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Barra del buscador */
+.search-bar-container {
+    background-color: #f8f9fa;
+    padding: 14px 24px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* Tabla de datos */
+.table-custom {
+    margin-bottom: 0;
+}
+
+.table-custom thead th {
+    background-color: #ffffff;
+    color: #495057;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+    padding: 13px 14px;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.table-custom tbody td {
+    padding: 12px 14px;
+    vertical-align: middle;
+    border-color: #e9ecef;
+}
+
+.table-custom tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Checkboxes */
+.form-check-input {
+    width: 1.1rem;
+    height: 1.1rem;
+    cursor: pointer;
+    border-color: #adb5bd;
+}
+
+/* Botones de acción por fila (Lápiz amarillo y Basura roja) */
+.btn-action-icon {
+    background: transparent;
+    border: none;
+    padding: 4px 6px;
+    font-size: 1.1rem;
+    line-height: 1;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.btn-action-icon:hover {
+    transform: scale(1.15);
+}
+
+.btn-action-edit {
+    color: var(--color-edit);
+}
+
+.btn-action-edit:hover {
+    color: var(--color-edit-hover);
+}
+
+.btn-action-delete {
+    color: var(--color-delete);
+}
+
+.btn-action-delete:hover {
+    color: var(--color-delete-hover);
+}
+
+/* Badges de estado laboral */
+.badge-estado {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 12px;
+    letter-spacing: 0.3px;
+}
+
+.badge-activo {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.badge-vacaciones {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.badge-incapacidad {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+/* Resaltado de fila propia en directorio.html (Rol EMPLEADO) */
+.fila-propia {
+    background-color: var(--color-highlight-row) !important;
+    border-left: 4px solid #0d6efd;
+}
+
+.fila-propia td {
+    font-weight: 500;
+}
+
+/* Tarjeta resumen personal del empleado */
+.card-resumen-personal {
+    border: none;
+    border-top: 4px solid var(--color-header-bg);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.stat-box {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 12px 16px;
+    height: 100%;
+    border: 1px solid #e9ecef;
+}
+
+.stat-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    color: #6c757d;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+/* Vistas centradas (Login y Error) */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.card-auth {
+    width: 100%;
+    max-width: 420px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-auth-header {
+    background-color: var(--color-header-bg);
+    color: #ffffff;
+    padding: 24px 20px;
+    text-align: center;
+}
+
+.card-error {
+    width: 100%;
+    max-width: 520px;
+    border: none;
+    border-top: 5px solid var(--color-delete);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
