@@ -17,24 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
  * </p>
  * <p>
  * <b>Función:</b> Ejecutar las reglas de negocio del manejador de empleados
- * sobre
- * {@code UsuarioRepository}: filtrar siempre por {@code Rol.EMPLEADO}, ejecutar
- * el buscador
- * (nombre completo, correo o teléfono; sin dirección), impedir borrado/edición
- * de gerentes,
- * conservar la contraseña cuando no se modifique al editar y lanzar
- * {@code EmpleadoNotFoundException}.
+ * sobre {@code UsuarioRepository}: filtrar siempre por {@code Rol.EMPLEADO},
+ * ejecutar el buscador (nombre completo, correo o teléfono; sin dirección),
+ * impedir borrado/edición de gerentes, conservar la contraseña cuando no se
+ * modifique al editar y lanzar {@code EmpleadoNotFoundException}.
  * </p>
- *
- * <p>
- * <b>TODO pendientes (Gael):</b>
- * </p>
- * <ul>
- * <li>En {@code buscarEmpleados}: si {@code termino} es nulo o vacío, retornar
- * {@code listarEmpleados()}.</li>
- * <li>En {@code obtenerEmpleadoPorId}: reemplazar el acceso directo a {@code Optional.get()}
- * para lanzar {@code EmpleadoNotFoundException} cuando no exista un empleado con ese ID.</li>
- * </ul>
  */
 @Service
 public class EmpleadoServiceImpl implements EmpleadoService {
@@ -67,39 +54,33 @@ public class EmpleadoServiceImpl implements EmpleadoService {
     /**
      * Busca empleados por nombre completo, correo electrónico o teléfono, sin consultar la dirección.
      *
-     * <p>La implementación actual rechaza términos nulos y delega el resto de la búsqueda
-     * al repositorio; la normalización de espacios se realiza en el controlador.</p>
+     * <p>Si el término recibido es nulo o está en blanco, devuelve el listado completo de empleados.</p>
      *
-     * @param termino texto no nulo utilizado como criterio de búsqueda
+     * @param termino texto utilizado como criterio de búsqueda (puede ser nulo o vacío)
      * @return empleados que coinciden con el criterio, ordenados por ID ascendente
-     * @throws IllegalArgumentException si el término es nulo
      */
     @Override
     public List<Usuario> buscarEmpleados(String termino) {
-        if (termino == null) {
-            throw new IllegalArgumentException("El término de búsqueda no puede ser nulo");
+        if (termino == null || termino.isBlank()) {
+            return listarEmpleados();
         }
-        return repository.buscarPorRolYTermino(rol, termino);
+        return repository.buscarPorRolYTermino(rol, termino.trim());
     }
 
     /**
      * Consulta un usuario por ID comprobando que tenga rol de empleado.
      *
-     * <p>El acceso actual al resultado mediante {@code Optional.get()} produce
-     * {@code NoSuchElementException} cuando no hay coincidencia. Está pendiente
-     * unificar ese caso con la excepción definida en el contrato del servicio.</p>
-     *
      * @param id identificador no nulo del empleado
      * @return empleado encontrado
-     * @throws EmpleadoNotFoundException si el ID es nulo
-     * @throws java.util.NoSuchElementException si no existe un empleado con ese ID
+     * @throws EmpleadoNotFoundException si el ID es nulo o no existe un empleado con ese ID
      */
     @Override
     public Usuario obtenerEmpleadoPorId(Long id) {
         if (id == null) {
             throw new EmpleadoNotFoundException("El ID del empleado no puede ser nulo");
         }
-        return repository.findByIdAndRol(id, rol).get();
+        return repository.findByIdAndRol(id, rol)
+                .orElseThrow(() -> new EmpleadoNotFoundException(id));
     }
 
     /**

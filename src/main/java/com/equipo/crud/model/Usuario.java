@@ -495,16 +495,6 @@ public class Usuario {
     }
 
     /**
-     * Indica si el usuario posee rol {@link Rol#EMPLEADO}.
-     *
-     * @return {@code true} si el rol es {@code EMPLEADO}
-     */
-    @Transient
-    public boolean esEmpleado() {
-        return rol == Rol.EMPLEADO;
-    }
-
-    /**
      * Devuelve una representación textual segura del usuario (omitiendo la contraseña).
      *
      * @return cadena descriptiva del usuario

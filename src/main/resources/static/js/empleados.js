@@ -197,10 +197,15 @@ document.addEventListener('DOMContentLoaded', () => {
         modalEliminarMultiple.addEventListener('show.bs.modal', () => {
             const seleccionados = obtenerIdsMarcados();
             const totalVisibles = rowCheckboxes.length;
+            const inputBusqueda = document.querySelector('input[name="q"]');
+            const hayFiltroActivo = inputBusqueda && inputBusqueda.value.trim().length > 0;
 
-            if (seleccionados.length === totalVisibles && totalVisibles > 0) {
+            if (!hayFiltroActivo && seleccionados.length === totalVisibles && totalVisibles > 0) {
                 textoEliminarMultiple.textContent =
                     '¿Seguro que quieres eliminar a todos los empleados del sistema?';
+            } else if (seleccionados.length === 1) {
+                textoEliminarMultiple.textContent =
+                    '¿Seguro que quieres eliminar al empleado seleccionado?';
             } else {
                 textoEliminarMultiple.textContent =
                     `¿Seguro que quieres eliminar a los ${seleccionados.length} empleados seleccionados?`;
